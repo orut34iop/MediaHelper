@@ -1,8 +1,8 @@
 import requests
 
 # 配置Emby服务器信息
-EMBY_SERVER_URL = "http://192.168.9.89:8096"
-API_KEY = ""
+EMBY_SERVER_URL = "http://127.0.0.1:8096"
+API_KEY = "850d6a3a78bc4ec6b584077b34b2a956"
 # 如果电影文件的实际路径带有下列某个字符串,则跳过合并,以;隔开
 exclude_str = "Remux - 特效字幕;"
 
