@@ -7,10 +7,6 @@ import xml.etree.ElementTree as ET
 #脚本处理后，文件夹重新命名为"movie1（year)","movie2（year)"
 
 
-#path = "D:\\115\\Movies\\onlyfile"
-path = "D:\\115\\Movies\\test"
-#SGNB特效中文字幕4K原盘电影 > Part1-100
-
 def process_folders(path):
     # 遍历给定路径下的一级子文件夹
     for folder_name in os.listdir(path):
@@ -70,4 +66,8 @@ def process_folders(path):
                 print(f"Folder does not meet criteria: {os.path.abspath(folder_path)}")
 
 # 调用函数，传入路径A
-process_folders(path)
+
+
+# 用户输入路径
+source_directory = input("请输入需要标准化名称的文件夹路径：")
+process_folders(source_directory)

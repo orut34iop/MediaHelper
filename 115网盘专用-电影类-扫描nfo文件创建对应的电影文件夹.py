@@ -9,9 +9,8 @@ import shutil
 
 
 
-# 使用示例：替换为您要处理的文件夹路径
-movie_folder_path = "D:\\115\\Movies\\Movies-Iso\\Part2-512s"
-# movie_folder_path = "C:\\tmp-movie"
+
+
 
 
 def process_movie_folder(folder_path):
@@ -68,5 +67,7 @@ def process_movie_folder(folder_path):
 
 
 
-# process_movie_folder("D:\\115\\Movies\\tmp")
-process_movie_folder("C:\\tmp-movie")
+# 用户输入路径
+# 使用示例：替换为您要处理的文件夹路径
+source_directory = input("请输入待整理的文件夹路径:")
+process_movie_folder(source_directory)
