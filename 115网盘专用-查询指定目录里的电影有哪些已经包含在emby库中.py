@@ -96,8 +96,13 @@ def process_nfo_files_in_directory(directory):
                 if query_emdb_value is not None:
                     if not query_movies_by_tmdbid(all_movies,query_emdb_value):
                         print(f"新增电影 : '{nfo_path}' ")
+                    else:
+                        if remove_duplicate_nfo_file == "yes":
+                            os.remove(nfo_path)
+                            print(f"删除重复电影nfo : '{nfo_path}' ")
 
 if __name__ == "__main__":
     # 用户输入路径
     source_directory = input("请输入包含 .nfo 文件的路径：")
+    remove_duplicate_nfo_file = input("是否删除重复的nfo文件, 请输入 yes 或 no :")
     process_nfo_files_in_directory(source_directory)
