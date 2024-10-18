@@ -66,12 +66,10 @@ def extract_tmdbid_from_nfo(nfo_path):
         
         if tmdbid_element is not None:
             query_tmdbid = tmdbid_element.text.strip()
-
             print(f"在 '{nfo_path}' 中找到 tmdbid: {query_tmdbid}")
-
             return query_tmdbid
-        else:
-            print(f"在 '{nfo_path}' 中未找到 tmdbid 元素。")
+        #else:
+            #print(f"在 '{nfo_path}' 中未找到 tmdbid 元素。")
     except ET.ParseError as e:
         print(f"解析错误：无法解析文件 '{nfo_path}'，错误信息: {e}")
     except Exception as e:
@@ -95,11 +93,11 @@ def process_nfo_files_in_directory(directory):
                 query_emdb_value = extract_tmdbid_from_nfo(nfo_path)
                 if query_emdb_value is not None:
                     if not query_movies_by_tmdbid(all_movies,query_emdb_value):
-                        print(f"新增电影 : '{nfo_path}' ")
+                        print(f"发现新电影 : '{nfo_path}' ")
                     else:
                         if remove_duplicate_nfo_file == "yes":
                             os.remove(nfo_path)
-                            print(f"删除重复电影nfo : '{nfo_path}' ")
+                            #print(f"删除重复电影nfo : '{nfo_path}' ")
 
 if __name__ == "__main__":
     # 用户输入路径
