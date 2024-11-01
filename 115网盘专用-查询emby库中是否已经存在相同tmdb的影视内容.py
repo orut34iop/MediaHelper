@@ -8,7 +8,7 @@ import requests
 
 
 # 配置Emby服务器信息
-EMBY_SERVER_URL = "http://127.0.0.1:8096"
+EMBY_SERVER_URL = "http://192.168.2.42:8096"
 API_KEY = "850d6a3a78bc4ec6b584077b34b2a956"
 query_emdb_value = "1173"  # 替换为您要查询的 TMDB 值
 
