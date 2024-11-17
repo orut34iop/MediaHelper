@@ -48,19 +48,21 @@ from tkinterdnd2 import TkinterDnD, DND_FILES
 import os
 import pyperclip  # 用来操作剪贴板
 
+import re
+
 # 创建主窗口
 root = TkinterDnD.Tk()
 
 # 设置窗口大小
-root.geometry('600x300')
+root.geometry('216x300')
 root.title('文件夹拖拽示例')
 
 # 第一行输入框（可以拖拽文件夹）
-entry = tk.Entry(root, width=70)
+entry = tk.Entry(root, width=200)
 entry.grid(row=0, column=0, padx=10, pady=10)
 
 # 第二行输出框（显示文件夹路径）
-output_text = tk.Text(root, width=70, height=10)
+output_text = tk.Text(root, width=200, height=10)
 output_text.grid(row=1, column=0, padx=10, pady=10)
 
 # 导出按钮
@@ -79,8 +81,12 @@ export_button.grid(row=2, column=0, pady=10)
 
 # 拖拽到输入框的回调函数
 def on_drop(event):
+
+    new_data1 = re.sub(r'^\{', '', event.data, count=1)
+    # 使用 re.sub() 替换 '} ' 和 ' {' 成换行符
+    new_data2 = re.sub(r'\}\s|\s\{', '\n', new_data1)
     # 获取拖拽的文件夹路径
-    folder_paths = event.data.split()  # 拖拽的路径数据，可能会是多个文件夹路径
+    folder_paths = new_data2.split('\n')  # 拖拽的路径数据，可能会是多个文件夹路径
     
     # 获取文件夹的名称
     folder_names = [os.path.basename(folder) for folder in folder_paths]
