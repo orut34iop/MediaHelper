@@ -1,5 +1,20 @@
 import os
 import re
+import shutil
+import sys
+import ctypes
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+def run_as_admin():
+    if not is_admin():
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+        sys.exit()
+
 
 def search_nfo_files_in_text():
     # 获取用户输入的目录和文本文件路径
@@ -8,7 +23,8 @@ def search_nfo_files_in_text():
     text_file ="C:\\emby-as-115\\PreLibs\\外语电影\\script\\目录树.txt"
     #text_file = input("请输入文本文件的路径：").strip()
     # 询问是否需要删除无效的nfo文件
-    delete_confirmation = input("是否删除没有对应视频的nfo文件？(y/n): ").strip().lower()
+    delete_confirmation = 'n'
+    # delete_confirmation = input("是否删除没有对应视频的nfo文件？(y/n): ").strip().lower()
 
 
     # 读取文本文件内容
@@ -36,8 +52,27 @@ def search_nfo_files_in_text():
                 pattern = re.compile(rf'{re.escape(file_name)}\.(mkv|ts|mp4|avi|rmvb|m2ts)',re.IGNORECASE | re.UNICODE)
                 match = pattern.search(text_content)
                 if match:
-                    #print(f"找到匹配：{match.group()}")
-                    i = 1
+                    video_file = match.group()
+                    
+                    # 获取nfo文件所在目录的绝对路径
+                    nfo_dir = os.path.dirname(nfo_file_path)
+                    
+                    # 替换路径字符串
+                    video_source_dir = nfo_dir.replace("C:\\emby-as-115\\PreLibs\\外语电影", "D:\\115\\Movies\\Pack-外语电影")
+                    
+                    # 构建源文件路径
+                    source_file = os.path.join(video_source_dir, video_file)
+                    
+                    # 生成符号链接文件
+                    try:
+                        # 创建符号链接
+                        link_name = os.path.join(nfo_dir, video_file)
+                        os.symlink(source_file, link_name)
+                        print(f"已创建符号链接：{link_name} -> {source_file}")
+                    except FileExistsError:
+                        print(f"错误：文件 {link_name} 已存在。")
+                    except Exception as e:
+                        print(f"错误：创建符号链接时发生错误：{e}")
                 else:
                     #print(f"没有找到匹配的视频：{nfo_file_path}")
                     if delete_confirmation == 'y':
@@ -53,4 +88,8 @@ def search_nfo_files_in_text():
 
 
 if __name__ == "__main__":
+    # 设置控制台输出编码为UTF-8
+    sys.stdout.reconfigure(encoding='utf-8')
+    # 检查是否以管理员身份运行，如果不是则重新运行脚本以提升权限
+    run_as_admin()
     search_nfo_files_in_text()
