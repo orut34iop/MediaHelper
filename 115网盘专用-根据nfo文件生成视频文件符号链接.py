@@ -19,9 +19,9 @@ def run_as_admin():
 def search_nfo_files_in_text():
     # 获取用户输入的目录和文本文件路径
     #directory = input("请输入要扫描的目录路径：").strip()
-    directory="C:\\emby-as-115\\PreLibs\\外语电影"
-    text_file ="C:\\emby-as-115\\PreLibs\\外语电影\\script\\目录树.txt"
-    #text_file = input("请输入文本文件的路径：").strip()
+    directory = r"C:\emby-as-115\PreLibs\M"
+    text_file = r"C:\Users\wiz\Downloads\video20241212113750_目录树.txt"
+    #text_file = input("请输入目录树文件的路径：").strip()
     # 询问是否需要删除无效的nfo文件
     delete_confirmation = 'n'
     # delete_confirmation = input("是否删除没有对应视频的nfo文件？(y/n): ").strip().lower()
@@ -46,20 +46,20 @@ def search_nfo_files_in_text():
                 nfo_file_path = os.path.join(root, file)
                 # 获取文件名，不包括扩展名
                 file_name = os.path.splitext(file)[0]
-                
+
                 # 在文本中搜索匹配文件名+".mkv"或".ts"的字符串
-                
-                pattern = re.compile(rf'{re.escape(file_name)}\.(mkv|ts|mp4|avi|rmvb|m2ts)',re.IGNORECASE | re.UNICODE)
+
+                pattern = re.compile(rf'{re.escape(file_name)}\.(mkv|ts|mp4|avi|rmvb|m2ts|iso)',re.IGNORECASE | re.UNICODE)
                 match = pattern.search(text_content)
                 if match:
                     video_file = match.group()
-                    
+
                     # 获取nfo文件所在目录的绝对路径
                     nfo_dir = os.path.dirname(nfo_file_path)
-                    
+
                     # 替换路径字符串
-                    video_source_dir = nfo_dir.replace("C:\\emby-as-115\\PreLibs\\外语电影", "D:\\115\\Movies\\Pack-外语电影")
-                    
+                    video_source_dir = nfo_dir.replace(r"C:\emby-as-115\PreLibs\M", r"D:\115\Movies\video")
+
                     # 构建源文件路径
                     source_file = os.path.join(video_source_dir, video_file)
                     
@@ -93,3 +93,5 @@ if __name__ == "__main__":
     # 检查是否以管理员身份运行，如果不是则重新运行脚本以提升权限
     run_as_admin()
     search_nfo_files_in_text()
+    # 等待用户输入回车键再退出
+    input("按回车键退出程序...")
