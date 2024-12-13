@@ -42,6 +42,8 @@ python merge_video_audio.py /path/to/your/directory
 提供了处理进度和统计信息
 保持了原有功能的完整性
 新版本将显著提高处理大量文件时的效率，同时提供更好的用户体验和错误处理能力。用户可以直接运行优化后的脚本，它会自动利用多线程来加速处理过程。
+
+bug2fix: 合并完文件后一直不退出
 '''	
 import os
 import sys
