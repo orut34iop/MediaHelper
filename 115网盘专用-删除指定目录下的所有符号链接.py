@@ -25,3 +25,5 @@ if __name__ == "__main__":
     import sys
     sys.stdout.reconfigure(encoding='utf-8')
     delete_symlinks_in_directory()
+    # 等待用户输入回车键再退出
+    input("按回车键退出程序...")
