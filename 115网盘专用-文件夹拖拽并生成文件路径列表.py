@@ -1,120 +1,166 @@
+"""
+115网盘文件夹路径生成器
+
+功能说明：
+将文件夹拖拽到输入框，自动生成文件夹路径列表。
+
+改进说明：
+1. 界面优化：
+   - 添加了清晰的使用说明标签
+   - 优化了按钮布局和文字说明
+   - 添加了清空功能按钮
+   - 改进了界面布局结构
+
+2. 用户体验提升：
+   - 使用消息框替代控制台输出
+   - 提供更友好的操作反馈
+   - 改进了剪贴板操作的提示
+   - 添加了重复路径检测，自动忽略重复项
+
+3. 错误处理：
+   - 添加了异常捕获机制
+   - 提供清晰的错误提示
+   - 改进了空内容处理
+
+4. 代码改进：
+   - 优化了代码结构和组织
+   - 添加了中文注释说明
+   - 保持了代码的简洁性
+"""
+
 import tkinter as tk
 from tkinterdnd2 import TkinterDnD, DND_FILES
 import os
-import pyperclip  # 用来操作剪贴板
-
-import re
+import pyperclip
+from tkinter import messagebox
 
 # 创建主窗口
 root = TkinterDnD.Tk()
-
-# 设置窗口大小
 root.geometry('800x400')
-root.title('文件夹拖拽示例')
+root.title('115网盘文件夹路径生成器')
 
-# 创建一个Frame用于包含所有控件，使其可以自适应大小
+# 创建主框架
 frame = tk.Frame(root)
 frame.pack(expand=True, fill=tk.BOTH)
 
-# 第一行输入框（可以拖拽文件夹）
+# 添加使用说明标签
+help_text = "使用说明：将文件夹拖拽到输入框即可生成路径列表（自动忽略重复路径）"
+help_label = tk.Label(frame, text=help_text, fg="gray")
+help_label.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky='w')
+
+# 输入框（可以拖拽文件夹）
 entry = tk.Entry(frame, width=200)
-entry.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
+entry.grid(row=1, column=0, columnspan=2, padx=10, pady=5, sticky='ew')
 
-# 第二行输出框（显示文件夹路径）
+# 输出框（显示文件夹路径）
 output_text = tk.Text(frame, width=200, height=10)
-output_text.grid(row=1, column=0, padx=10, pady=10, sticky='ew')
+output_text.grid(row=2, column=0, columnspan=2, padx=10, pady=5, sticky='ew')
 
-# 导出按钮
 def export_to_clipboard():
-    # 获取文本框中的内容
-    content = output_text.get(1.0, tk.END).strip()
-    
-    if content:  # 如果内容不为空
-        pyperclip.copy(content)  # 将内容拷贝到剪贴板
-        print("内容已复制到剪贴板")
-    else:
-        print("输出框为空，无法导出")
+    """导出内容到剪贴板，使用消息框提供操作反馈"""
+    try:
+        content = output_text.get(1.0, tk.END).strip()
+        if content:
+            pyperclip.copy(content)
+            messagebox.showinfo("成功", "内容已复制到剪贴板")
+        else:
+            messagebox.showwarning("提示", "输出框为空，无法导出")
+    except Exception as e:
+        messagebox.showerror("错误", f"复制到剪贴板时出错：{str(e)}")
 
-export_button = tk.Button(frame, text="导出", command=export_to_clipboard)
-export_button.grid(row=2, column=0, padx=10, pady=10)
+def clear_all():
+    """清空所有输入和输出内容"""
+    entry.delete(0, tk.END)
+    output_text.delete(1.0, tk.END)
 
 def scan_string(input_string):
+    """
+    解析拖拽数据中的路径
+    处理带空格的路径（使用{}包围）和不带空格的路径
+    """
     result = []
     i = 0
     while i < len(input_string):
-        # 如果字符是'{'
         if input_string[i] == '{':
-            # 找到匹配的'}'
             i += 1
             start = i
             while i < len(input_string) and input_string[i] != '}':
                 i += 1
-            # 保存 '{}' 之间的内容
             result.append(input_string[start:i])
-            #跳过 '}' 
             i += 1
-        # 如果字符不是'{'
         else:
             start = i
-            while (i < len(input_string) and input_string[i] != ' ' ):
+            while i < len(input_string) and input_string[i] != ' ':
                 i += 1
-            # 保存空格或'{''之前的内容
             result.append(input_string[start:i])
         
-        # 跳过空格
         if i < len(input_string) and input_string[i] == ' ':
             i += 1
     
-    return result
+    return [path for path in result if path.strip()]
 
+def get_existing_paths():
+    """获取输出框中已存在的路径列表"""
+    content = output_text.get(1.0, tk.END).strip()
+    if content:
+        return set(content.split('\n'))
+    return set()
 
-# 拖拽到输入框的回调函数
 def on_drop(event):
-
-
     """
-    event.data 字符串格式如下:
-    规律： 如果文件路径中有空格，就用{}包起来，否则直接用空格区分
-    '{C:/Users/wiz/Documents/华为电脑管家13.0.6.360 雷蛇已验证AI字幕} C:/Users/wiz/Documents/HonorSuite {C:/Users/wiz/Documents/Virtual Machines} C:/Users/wiz/Documents/华为电脑管家'
-    'C:/Users/wiz/Documents/华为电脑管家 C:/Users/wiz/Documents/HonorSuite {C:/Users/wiz/Documents/Virtual Machines}'
+    处理文件夹拖拽事件
+    包含错误处理和用户反馈
+    自动检测并忽略重复的路径
     """
-    """
-    data_start = re.sub(r'^\{', '', event.data, count=1)
-    # 使用 re.sub() 替换 '} ' 和 ' {' 成换行符
-    data_mid= re.sub(r'\}\s|\s\{', '\n', data_start)
-    data_end = re.sub(r'\}', '', data_mid, count=1)
-    # 获取拖拽的文件夹路径
-    folder_paths = data_end.split('\n')  # 拖拽的路径数据，可能会是多个文件夹路径
-    """
+    try:
+        # 获取已存在的路径
+        existing_paths = get_existing_paths()
+        
+        # 解析拖拽的路径
+        folder_paths = scan_string(event.data)
+        
+        # 过滤掉重复的路径
+        new_paths = [path for path in folder_paths if path not in existing_paths]
+        
+        if not new_paths:
+            messagebox.showinfo("提示", "所有拖入的路径都已存在，已自动忽略")
+            return
+            
+        # 获取新路径的文件夹名称
+        folder_names = [os.path.basename(folder) for folder in new_paths]
+        
+        # 更新输入框
+        current_text = entry.get()
+        if current_text:
+            current_text += "; "
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, current_text + '; '.join(folder_names))
+        
+        # 更新输出框，只添加新的路径
+        current_output = output_text.get(1.0, tk.END).strip()
+        if current_output:
+            output_text.insert(tk.END, '\n' + '\n'.join(new_paths) + '\n')
+        else:
+            output_text.insert(tk.END, '\n'.join(new_paths) + '\n')
+        
+    except Exception as e:
+        messagebox.showerror("错误", f"处理拖拽数据时出错：{str(e)}")
 
-    folder_paths = scan_string(event.data)
+# 创建按钮框架
+button_frame = tk.Frame(frame)
+button_frame.grid(row=3, column=0, columnspan=2, pady=10)
 
-    # 获取文件夹的名称
-    folder_names = [os.path.basename(folder) for folder in folder_paths]
-    
-    # 获取当前输入框中的内容
-    current_text = entry.get()
-    
-    # 如果当前输入框有内容，添加分号和空格
-    if current_text:
-        current_text += "; "
-    
-    # 更新输入框中的内容，将新的文件夹名称追加到原有内容后面
-    entry.delete(0, tk.END)
-    entry.insert(tk.END, current_text + '; '.join(folder_names))  # 显示文件夹名称，用分号分隔
-    
-    # 获取当前输出框中的内容
-    current_output_text = output_text.get(1.0, tk.END)
-    
-    # 如果输出框已有内容，添加换行
-    if current_output_text.strip():
-        current_output_text += "\n"
-    
-    # 更新输出框，追加文件夹的绝对路径
-    output_text.delete(1.0, tk.END)
-    output_text.insert(tk.END, current_output_text + '\n'.join(folder_paths) + '\n')  # 将文件夹路径按行插入输出框
+# 添加按钮
+export_button = tk.Button(button_frame, text="复制到剪贴板", command=export_to_clipboard)
+export_button.pack(side=tk.LEFT, padx=5)
 
-# 绑定拖拽事件到输入框
+clear_button = tk.Button(button_frame, text="清空内容", command=clear_all)
+clear_button.pack(side=tk.LEFT, padx=5)
+
+# 配置网格权重
+frame.grid_columnconfigure(0, weight=1)
+
+# 绑定拖拽事件
 entry.drop_target_register(DND_FILES)
 entry.dnd_bind('<<Drop>>', on_drop)
 
