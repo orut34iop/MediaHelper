@@ -1,105 +1,89 @@
-"""
-
-GPT4 代码生成提示
-
-需求说明：
-
-我们需要开发一个Windows桌面应用，要求如下：
-
-应用窗口设置：
-
-窗口大小：600x300。
-输入框（第一行）：
-
-用户可以将一个或多个文件夹从文件管理器拖拽到此输入框中。
-每次拖拽文件夹时：
-仅显示文件夹的名称（去除路径），且各个文件夹名称用分号（;）分隔。
-如果已经有文件夹名称，新的文件夹名称应以追加的方式添加到现有内容末尾。
-输出框（第二行）：
-
-每次拖拽文件夹时，自动更新并显示拖拽的文件夹的完整路径（每个路径占一行）。
-如果已有内容，新的文件夹路径应追加到现有内容后面。
-导出按钮：
-
-点击按钮时，第二行的文本框内容（即文件夹路径列表）应复制到系统剪贴板。
-功能细节：
-
-拖拽操作：
-
-用户可以通过拖拽文件夹（一个或多个）到输入框，实现文件夹路径的更新。
-路径格式：
-
-输入框只显示文件夹名称，并用分号分隔。
-输出框显示文件夹的完整路径，每个路径占一行。
-追加模式：
-
-每次拖拽时，输入框和输出框中的内容都应以追加模式更新。
-剪贴板功能：
-
-点击“导出”按钮时，输出框中的路径列表将被复制到剪贴板。
-目标：
-
-通过该应用，用户能够方便地查看和操作拖拽进来的文件夹路径，并能够轻松地将路径信息复制到剪贴板。
-
-这种描述简洁明了，明确了每个功能点，同时对开发人员的理解和实现方式更为友好。
-
-
-115网盘文件夹路径生成器
-
-功能说明：
-将文件夹拖拽到输入框，自动生成文件夹路径列表。
-
-改进说明：
-1. 界面优化：
-   - 添加了清晰的使用说明标签
-   - 优化了按钮布局和文字说明
-   - 添加了清空功能按钮
-   - 改进了界面布局结构
-
-2. 用户体验提升：
-   - 使用消息框替代控制台输出
-   - 提供更友好的操作反馈
-   - 改进了剪贴板操作的提示
-   - 添加了重复路径检测，自动忽略重复项
-
-3. 错误处理：
-   - 添加了异常捕获机制
-   - 提供清晰的错误提示
-   - 改进了空内容处理
-
-4. 代码改进：
-   - 优化了代码结构和组织
-   - 添加了中文注释说明
-   - 保持了代码的简洁性
-"""
-
 import tkinter as tk
 from tkinterdnd2 import TkinterDnD, DND_FILES
 import os
 import pyperclip
-from tkinter import messagebox
+from tkinter import messagebox, ttk, filedialog
+import configparser
 
-# 创建主窗口
-root = TkinterDnD.Tk()
-root.geometry('800x400')
-root.title('115网盘文件夹路径生成器')
+def validate_inputs():
+    """验证所有输入是否为空"""
+    validations = [
+        (source_entry.get().strip(), "链接文件夹不能为空"),
+        (target_entry.get().strip(), "目标文件夹不能为空"),
+        (thread_spinbox.get().strip(), "同步线程数不能为空"),
+        (soft_link_entry.get().strip(), "软链接后缀不能为空"),
+        (meta_entry.get().strip(), "元数据后缀不能为空")
+    ]
+    
+    for value, message in validations:
+        if not value:
+            messagebox.showwarning("验证失败", message)
+            return False
+    return True
 
-# 创建主框架
-frame = tk.Frame(root)
-frame.pack(expand=True, fill=tk.BOTH)
+def save_config():
+    """保存配置到config.ini文件"""
+    if not validate_inputs():
+        return False
+        
+    config = configparser.ConfigParser()
+    config['Settings'] = {
+        'source_folder': source_entry.get().strip(),
+        'target_folder': target_entry.get().strip(),
+        'thread_count': thread_spinbox.get().strip(),
+        'soft_link_extensions': soft_link_entry.get().strip(),
+        'metadata_extensions': meta_entry.get().strip(),
+        'path_list': output_text.get(1.0, tk.END).strip()  # 保存文本区域内容
+    }
+    
+    try:
+        with open('config.ini', 'w', encoding='utf-8') as configfile:
+            config.write(configfile)
+        messagebox.showinfo("成功", "配置已保存到config.ini")
+        return True
+    except Exception as e:
+        messagebox.showerror("错误", f"保存配置文件时出错：{str(e)}")
+        return False
 
-# 添加使用说明标签
-help_text = "使用说明：将文件夹拖拽到输入框即可生成路径列表（自动忽略重复路径）"
-help_label = tk.Label(frame, text=help_text, fg="gray")
-help_label.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky='w')
+def load_config():
+    """从config.ini文件加载配置"""
+    if not os.path.exists('config.ini'):
+        return
+        
+    config = configparser.ConfigParser()
+    try:
+        config.read('config.ini', encoding='utf-8')
+        if 'Settings' in config:
+            source_entry.delete(0, tk.END)
+            source_entry.insert(0, config['Settings'].get('source_folder', ''))
+            
+            target_entry.delete(0, tk.END)
+            target_entry.insert(0, config['Settings'].get('target_folder', ''))
+            
+            thread_spinbox.delete(0, tk.END)
+            thread_spinbox.insert(0, config['Settings'].get('thread_count', '5'))
+            
+            soft_link_entry.delete(0, tk.END)
+            soft_link_entry.insert(0, config['Settings'].get('soft_link_extensions', 
+                '.mkv;.iso;.ts;.mp4;.avi;.rmvb;.wmv;.m2ts;.mpg;.flv;.rm'))
+            
+            meta_entry.delete(0, tk.END)
+            meta_entry.insert(0, config['Settings'].get('metadata_extensions',
+                '.nfo;.jpg;.png;.svg;.ass;.srt;.sup'))
+                
+            # 加载文本区域内容
+            output_text.delete(1.0, tk.END)
+            path_list = config['Settings'].get('path_list', '')
+            if path_list:
+                output_text.insert(tk.END, path_list)
+    except Exception as e:
+        messagebox.showerror("错误", f"加载配置文件时出错：{str(e)}")
 
-# 输入框（可以拖拽文件夹）
-entry = tk.Entry(frame, width=200)
-entry.grid(row=1, column=0, columnspan=2, padx=10, pady=5, sticky='ew')
-
-# 输出框（显示文件夹路径）
-output_text = tk.Text(frame, width=200, height=10)
-output_text.grid(row=2, column=0, columnspan=2, padx=10, pady=5, sticky='ew')
+def on_sync_all():
+    """一键全同步按钮点击事件"""
+    if save_config():
+        # 这里可以添加其他同步相关的代码
+        pass
 
 def export_to_clipboard():
     """导出内容到剪贴板，使用消息框提供操作反馈"""
@@ -115,14 +99,18 @@ def export_to_clipboard():
 
 def clear_all():
     """清空所有输入和输出内容"""
-    entry.delete(0, tk.END)
+    source_entry.delete(0, tk.END)
     output_text.delete(1.0, tk.END)
 
+def browse_folder(entry):
+    """浏览文件夹"""
+    folder = filedialog.askdirectory()
+    if folder:
+        entry.delete(0, tk.END)
+        entry.insert(0, folder)
+
 def scan_string(input_string):
-    """
-    解析拖拽数据中的路径
-    处理带空格的路径（使用{}包围）和不带空格的路径
-    """
+    """解析拖拽数据中的路径"""
     result = []
     i = 0
     while i < len(input_string):
@@ -151,70 +139,144 @@ def get_existing_paths():
         return set(content.split('\n'))
     return set()
 
-def on_drop(event):
-    """
-    处理文件夹拖拽事件
-    包含错误处理和用户反馈
-    自动检测并忽略重复的路径
-    """
-    """
-    event.data 字符串格式如下:
-    规律： 如果文件路径中有空格，就用{}包起来，否则直接用空格区分
-    '{C:/Users/wiz/Documents/华为电脑管家13.0.6.360 雷蛇已验证AI字幕} C:/Users/wiz/Documents/HonorSuite {C:/Users/wiz/Documents/Virtual Machines} C:/Users/wiz/Documents/华为电脑管家'
-    'C:/Users/wiz/Documents/华为电脑管家 C:/Users/wiz/Documents/HonorSuite {C:/Users/wiz/Documents/Virtual Machines}'
-    """
-
+def on_source_drop(event):
+    """处理源文件夹拖拽事件"""
     try:
-        # 获取已存在的路径
         existing_paths = get_existing_paths()
-        
-        # 解析拖拽的路径
         folder_paths = scan_string(event.data)
-        
-        # 过滤掉重复的路径
         new_paths = [path for path in folder_paths if path not in existing_paths]
         
         if not new_paths:
             messagebox.showinfo("提示", "所有拖入的路径都已存在，已自动忽略")
             return
             
-        # 获取新路径的文件夹名称
         folder_names = [os.path.basename(folder) for folder in new_paths]
         
-        # 更新输入框
-        current_text = entry.get()
+        current_text = source_entry.get()
         if current_text:
             current_text += "; "
-        entry.delete(0, tk.END)
-        entry.insert(tk.END, current_text + '; '.join(folder_names))
+        source_entry.delete(0, tk.END)
+        source_entry.insert(tk.END, current_text + '; '.join(folder_names))
         
-        # 更新输出框，只添加新的路径
         current_output = output_text.get(1.0, tk.END).strip()
         if current_output:
-            output_text.insert(tk.END, '\n' + '\n'.join(new_paths) + '\n')
+            output_text.insert(tk.END, '\n' + '\n'.join(new_paths))
         else:
-            output_text.insert(tk.END, '\n'.join(new_paths) + '\n')
+            output_text.insert(tk.END, '\n'.join(new_paths))
         
     except Exception as e:
         messagebox.showerror("错误", f"处理拖拽数据时出错：{str(e)}")
 
-# 创建按钮框架
-button_frame = tk.Frame(frame)
-button_frame.grid(row=3, column=0, columnspan=2, pady=10)
+def on_target_drop(event):
+    """处理目标文件夹拖拽事件"""
+    try:
+        folder_paths = scan_string(event.data)
+        if len(folder_paths) > 1:
+            messagebox.showwarning("提示", "目标文件夹只能拖入单个文件夹")
+            return
+        
+        if folder_paths:
+            folder_path = folder_paths[0]
+            if os.path.isdir(folder_path):
+                target_entry.delete(0, tk.END)
+                target_entry.insert(0, os.path.abspath(folder_path))
+            else:
+                messagebox.showwarning("提示", "请拖入文件夹而不是文件")
+        
+    except Exception as e:
+        messagebox.showerror("错误", f"处理拖拽数据时出错：{str(e)}")
 
-# 添加按钮
-export_button = tk.Button(button_frame, text="复制到剪贴板", command=export_to_clipboard)
-export_button.pack(side=tk.LEFT, padx=5)
+# 创建主窗口
+root = TkinterDnD.Tk()
+root.title("115网盘文件共路径生成器")
+root.geometry("800x600")
 
-clear_button = tk.Button(button_frame, text="清空内容", command=clear_all)
-clear_button.pack(side=tk.LEFT, padx=5)
+# 创建主框架
+frame = ttk.Frame(root, padding=10)
+frame.pack(fill=tk.BOTH, expand=True)
 
-# 配置网格权重
-frame.grid_columnconfigure(0, weight=1)
+# 使用说明
+help_text = "使用说明: 将文件夹拖拽到输入框即可生成路径列表 (自动忽略重复路径)"
+help_label = ttk.Label(frame, text=help_text, foreground="gray")
+help_label.pack(fill=tk.X, pady=(0, 10))
+
+# 主文本区域（显示路径）
+text_frame = ttk.Frame(frame)
+text_frame.pack(fill=tk.BOTH, expand=True)
+output_text = tk.Text(text_frame, height=15)
+output_text.pack(fill=tk.BOTH, expand=True, pady=(0, 10))
+
+# 链接文件夹区域
+source_frame = ttk.Frame(frame)
+source_frame.pack(fill=tk.X, pady=2)
+ttk.Label(source_frame, text="链接文件夹").pack(side=tk.LEFT)
+source_entry = ttk.Entry(source_frame)
+source_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+ttk.Button(source_frame, text="浏览", command=lambda: browse_folder(source_entry)).pack(side=tk.RIGHT)
+
+# 目标文件夹区域
+target_frame = ttk.Frame(frame)
+target_frame.pack(fill=tk.X, pady=2)
+ttk.Label(target_frame, text="目标文件夹").pack(side=tk.LEFT)
+target_entry = ttk.Entry(target_frame)
+target_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+ttk.Button(target_frame, text="浏览", command=lambda: browse_folder(target_entry)).pack(side=tk.RIGHT)
+
+# 同步线程数
+thread_frame = ttk.Frame(frame)
+thread_frame.pack(fill=tk.X, pady=2)
+ttk.Label(thread_frame, text="同步线程数:").pack(side=tk.LEFT)
+thread_spinbox = ttk.Spinbox(thread_frame, from_=1, to=32, width=10)
+thread_spinbox.set(5)
+thread_spinbox.pack(side=tk.LEFT, padx=5)
+
+# 软链接后缀
+soft_link_frame = ttk.Frame(frame)
+soft_link_frame.pack(fill=tk.X, pady=2)
+ttk.Label(soft_link_frame, text="软链接后缀:").pack(side=tk.LEFT)
+soft_link_entry = ttk.Entry(soft_link_frame)
+soft_link_entry.insert(0, ".mkv;.iso;.ts;.mp4;.avi;.rmvb;.wmv;.m2ts;.mpg;.flv;.rm")
+soft_link_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+ttk.Label(soft_link_frame, text="以;隔开").pack(side=tk.RIGHT)
+
+# 元数据后缀
+meta_frame = ttk.Frame(frame)
+meta_frame.pack(fill=tk.X, pady=2)
+ttk.Label(meta_frame, text="元数据后缀:").pack(side=tk.LEFT)
+meta_entry = ttk.Entry(meta_frame)
+meta_entry.insert(0, ".nfo;.jpg;.png;.svg;.ass;.srt;.sup")
+meta_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+ttk.Label(meta_frame, text="以;隔开").pack(side=tk.RIGHT)
+
+# 开始同步区域
+sync_frame = ttk.LabelFrame(frame, text="开始同步", padding=5)
+sync_frame.pack(fill=tk.X)
+
+# 按钮组
+button_frame = ttk.Frame(sync_frame)
+button_frame.pack(fill=tk.X, pady=5)
+
+buttons = [
+    ("一键全同步", on_sync_all),
+    ("创建软链接", None),
+    ("下载元数据", None),
+    ("复制到剪贴板", export_to_clipboard),
+    ("清空文件夹列表", clear_all)
+]
+
+for btn_text, cmd in buttons:
+    btn = ttk.Button(button_frame, text=btn_text, command=cmd)
+    btn.pack(side=tk.LEFT, padx=2)
 
 # 绑定拖拽事件
-entry.drop_target_register(DND_FILES)
-entry.dnd_bind('<<Drop>>', on_drop)
+source_entry.drop_target_register(DND_FILES)
+source_entry.dnd_bind('<<Drop>>', on_source_drop)
+
+target_entry.drop_target_register(DND_FILES)
+target_entry.dnd_bind('<<Drop>>', on_target_drop)
+
+# 加载配置
+load_config()
 
 # 运行主循环
 root.mainloop()
