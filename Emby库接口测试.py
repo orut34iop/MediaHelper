@@ -3,122 +3,190 @@ import json
 import time
 
 
-# Emby服务器的API URL和认证信息
+# Emby server API URL and authentication information
 emby_url = "http://192.168.2.42:8096"
 api_key = "850d6a3a78bc4ec6b584077b34b2a956"
-user_id = 'WIZ-LT'  # 可选，如果API需要用户身份验证
-
+user_id = 'cefa80922459464484efd3ac11a714b8' #  是从wireshark抓包工具中获取的
+    
 def emby_get_all_movie_genres():
 
-    # 设置API请求头
+    # Set API request headers
     headers = {
         'X-Emby-Token': api_key
     }
 
-    # 获取所有电影的API端点
+    # Get the API endpoint for all movies
     items_endpoint = f'{emby_url}/Items'
 
-    # 设置查询参数
+    # Set query parameters
     params = {
         'Recursive': 'true',
         'IncludeItemTypes': 'Movie',
-        'Fields': 'Genres',  # 请求包含Genres字段
-        'Limit': '1'  # 根据你的需求调整限制数量
+        'Fields': 'Genres',  # Request to include the Genres field
+        'Limit': '1000000'  # Adjust the limit according to your needs
     }
 
-    # 发送请求获取电影列表
+    # Send request to get the list of movies
     response = requests.get(items_endpoint, headers=headers, params=params)
 
-    # 检查请求是否成功
+    # Check if the request was successful
     if response.status_code == 200:
         movies = response.json()['Items']
-        # 使用集合来去重流派信息
+        # Use a set to remove duplicate genres
         all_genres = set()
         
         for movie in movies:
+
+            # Dynamically parse all fields in the JSON data
+            '''
+            print("\nParsed fields:")
+            for key, value in movie.items():
+                print(f"{key}: {value}")
+            '''
+
             movie_name = movie['Name']
             genres = movie.get('Genres', [])
             if genres:
-                # 将流派添加到集合中
+                # Add genres to the set
                 all_genres.update(genres)
-                print(f"电影: {movie_name}")
-                print(f"流派: {', '.join(genres)}")
+                '''
+                print(f"Movie: {movie_name}")
+                print(f"Genres: {', '.join(genres)}")
                 print('-' * 30)
+                '''
             else:
-                print(f"电影 '{movie_name}' 没有指定流派.")
+                print(f"Movie '{movie_name}' has no specified genres.")
         
-        # 打印所有不重复的流派
-        print("所有不重复的流派:")
+        # Print all unique genres
+        print("All unique genres:")
         print(', '.join(sorted(all_genres)))
     else:
-        print(f"请求失败，状态码: {response.status_code}")
+        print(f"Request failed, status code: {response.status_code}")
+        print(response.text)
+
+#GET /Search/Hints
+#搜索媒体库
+def emby_Search_all_movie():
+
+    # Set API request headers
+    headers = {
+        'X-Emby-Token': api_key,
+        'Content-Type': 'application/json'
+    }
+
+    # Get the API endpoint for all movies
+    items_endpoint = f'{emby_url}/Items'
+
+    # Set query parameters
+    params = {
+        'Recursive': 'true',
+        'IncludeItemTypes': 'Movie',
+        'Fields': 'Genres',  # Request to include the Genres field
+        'Limit': '1'  # Adjust the limit according to your needs
+    }
+
+    # Send request to get the list of movies
+    response = requests.get(items_endpoint, headers=headers, params=params)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        movies = response.json()['Items']
+        # Use a set to remove duplicate genres
+        all_genres = set()
+        
+        for movie in movies:
+
+            # Dynamically parse all fields in the JSON data
+            print("\nParsed fields:")
+            for key, value in movie.items():
+                print(f"{key}: {value}")
+
+            movie_name = movie['Name']
+            genres = movie.get('Genres', [])
+            if genres:
+                # Add genres to the set
+                all_genres.update(genres)
+                print(f"Movie: {movie_name}")
+                print(f"Genres: {', '.join(genres)}")
+                print('-' * 30)
+            else:
+                print(f"Movie '{movie_name}' has no specified genres.")
+        
+        # Print all unique genres
+        print("All unique genres:")
+        print(', '.join(sorted(all_genres)))
+    else:
+        print(f"Request failed, status code: {response.status_code}")
         print(response.text)
 
 
 
+def emby_get_item_info(movie_id):
 
-def emby_get_item_info():
-
-    # 设置API请求头
+    # Set API request headers
     headers = {
-        'X-Emby-Token': api_key
+        'X-Emby-Token': api_key,
+        'Content-Type': 'application/json'
     }
 
-    movie_id = '429692'
-    # 获取所有电影的API端点
-    #detail_item_endpoint = f'{emby_url}/Users/{user_id}/Items/{movie_id}'
-    detail_item_endpoint = f'{emby_url}/emby/Users/{user_id}/Items/{movie_id}'
+    # Get the API endpoint for the movie
+    detail_item_endpoint = f'{emby_url}/users/{user_id}/items/{movie_id}'
 
-    # 设置查询参数
-    params = {
-        'api_key': api_key
-    }
 
-    #detail_item_response = requests.get(detail_item_endpoint, headers=headers, params=params)
     detail_item_response = requests.get(detail_item_endpoint, headers=headers)
 
     if detail_item_response.status_code == 200:
-        print("已获取完整电影信息")
+        print("Successfully retrieved complete movie information")
         movie_data = detail_item_response.json()
-        # 动态解析json数据中的所有字段
-        print("\n解析到的所有字段:")
+        # Dynamically parse all fields in the JSON data
+        print("\nParsed fields:")
         for key, value in movie_data.items():
             print(f"{key}: {value}")
     else:
-        print(f"获取完整电影信息失败，状态码: {detail_item_response.status_code}")
-        print(f"响应内容: {detail_item_response.text}")
+        print(f"Failed to retrieve complete movie information, status code: {detail_item_response.status_code}")
+        print(f"Response content: {detail_item_response.text}")
 
 
 def emby_get_item_MetadataEditorInfo():
 
-    # 设置API请求头
+    # Set API request headers
     headers = {
         'X-Emby-Token': api_key,
         'Content-Type': 'application/json'
     }
 
     movie_id = '429692'
-    # 获取所有电影的API端点
+    # Get the API endpoint for the movie
     detail_item_endpoint = f'{emby_url}/Items/{movie_id}/MetadataEditor'
 
-    # 设置查询参数
+    # Set query parameters
     params = {
-        'api_key': api_key
+        'api_key': api_key,
+        'Content-Type': 'application/json'
     }
 
     detail_item_response = requests.get(detail_item_endpoint, headers=headers, params=params)
 
     if detail_item_response.status_code == 200:
-        print("已获取完整电影信息")
+        print("Successfully retrieved complete movie information")
         movie_data = detail_item_response.json()
-        # 动态解析json数据中的所有字段
-        print("\n解析到的所有字段:")
+        # Dynamically parse all fields in the JSON data
+        print("\nParsed fields:")
         for key, value in movie_data.items():
             print(f"{key}: {value}")
     else:
-        print(f"获取完整电影信息失败，状态码: {detail_item_response.status_code}")
-        print(f"响应内容: {detail_item_response.text}")
+        print(f"Failed to retrieve complete movie information, status code: {detail_item_response.status_code}")
+        print(f"Response content: {detail_item_response.text}")
 
-#emby_get_all_movie_genres()#PASS
-emby_get_item_info()#FAIL
-#emby_get_item_MetadataEditorInfo()#PASS
+
+
+
+
+
+
+
+
+emby_get_all_movie_genres()#PASSc
+emby_get_item_info('429692')#PASS
+emby_get_item_MetadataEditorInfo()#PASS
+
