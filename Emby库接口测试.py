@@ -136,12 +136,12 @@ def emby_get_item_info(movie_id):
     detail_item_response = requests.get(detail_item_endpoint, headers=headers)
 
     if detail_item_response.status_code == 200:
-        print("Successfully retrieved complete movie information")
+        #print("Successfully retrieved complete movie information")
         movie_data = detail_item_response.json()
         # Dynamically parse all fields in the JSON data
-        print("\nParsed fields:")
-        for key, value in movie_data.items():
-            print(f"{key}: {value}")
+        #print("\nParsed fields:")
+        #for key, value in movie_data.items():
+        #    print(f"{key}: {value}")
         return movie_data
     else:
         print(f"Failed to retrieve complete movie information, status code: {detail_item_response.status_code}")
@@ -271,8 +271,7 @@ def emby_translate_genres():
                     genreitems.append({'Name': translated_genreitem, 'Id': genreitem['Id']})
                 
                 # 更新电影的流派信息
-                #update_endpoint = f'{emby_url}/users/{user_id}/Items/{movie_id}?/api_key={api_key}'
-                update_endpoint = f'{emby_url}/emby/Items/{movie_id}?/api_key={api_key}' #接口应该正确了，但是参数可能有问题
+                update_endpoint = f'{emby_url}/emby/Items/{movie_id}?/api_key={api_key}' #URL接口应该正确了，但是参数可能有问题
                 update_data = {
                     "Genres": translated_genres,
                     'GenreItems': genreitems
@@ -295,9 +294,115 @@ def emby_translate_genres():
 
 
 
+def emby_translate_genres_and_update_whole_item():
+
+    genreitems = []
+
+    # 设置API请求头
+    headers = {
+        'X-Emby-Token': api_key,
+        'Content-Type': 'application/json'
+    }
+
+    # 流派映射表
+    genres_map = {
+        'Action': '动作',
+        'Adventure': '冒险',
+        'Animation': '动画',
+        'Biography': '传记',
+        'Comedy': '喜剧',
+        'Crime': '犯罪',
+        'Documentary': '纪录片',
+        'Drama': '戏剧',
+        'Erotic': '情色',
+        'Family': '家庭',
+        'Fantasy': '奇幻',
+        'History': '历史',
+        'Horror': '恐怖',
+        'Music': '音乐',
+        'Musical': '音乐剧',
+        'Mystery': '悬疑',
+        'Reality TV': '真人秀',
+        'Romance': '浪漫',
+        'Science Fiction': '科幻',
+        'Sport': '运动',
+        'TV Movie': '电视电影',
+        'Thriller': '惊悚',
+        'War': '战争',
+        'Western': '西部片'
+    }
+
+    # 获取所有电影的API端点
+    items_endpoint = f'{emby_url}/Items'
+
+    # 设置查询参数
+    params = {
+        'Recursive': 'true',
+        'IncludeItemTypes': 'Movie',
+        'Fields': 'Genres',  # 请求包含Genres字段
+        'Limit': '1000000'  # 根据你的需求调整限制数量
+    }
+
+    # 发送请求获取电影列表
+    response = requests.get(items_endpoint, headers=headers, params=params)
+
+    if response.status_code == 200:
+        movies = response.json()['Items']
+        
+        for each_movie in movies:
+
+#            print("\nParsed fields:")
+#            for key, value in each_movie.items():
+#                print(f"{key}: {value}")
+
+            movie_id = each_movie['Id']
+
+            movie = emby_get_item_info(movie_id)
+
+            movie_name = movie['Name']
+            genres = movie.get('Genres', [])
+
+            # 打印原有和翻译后的流派
+            print(f"电影: {movie_name}")
+#            print(f"原流派: {', '.join(genres)}")
+            #print(f"原流派项目表: {', '.join(movie.get('GenreItems', []))}")       
+            #print(f"原流派项目表: {', '.join(genreitems)}")
+
+            if genres:
+                # 使用映射表翻译流派
+                translated_genres = [genres_map.get(genre, genre) for genre in genres]
+#                print(f"翻译后流派: {', '.join(translated_genres)}")
+
+                # 解析并保存GenreItems字段
+                for genreitem in movie.get('GenreItems', []):
+                    translated_genreitem = genres_map.get(genreitem['Name'], genreitem['Name'])
+                    genreitems.append({'Name': translated_genreitem, 'Id': genreitem['Id']})
+                
+                # 更新电影的流派信息
+                movie['Genres'] = translated_genres
+                movie['GenreItems'] = genreitems
+                
+                update_endpoint = f'{emby_url}/emby/Items/{movie_id}?/api_key={api_key}' 
+            
+                update_response = requests.post(update_endpoint, headers=headers, data=json.dumps(movie))
+
+                if update_response.status_code in [200, 204]:
+                    print("流派信息已更新。")
+                else:
+                    print(f"更新失败，状态码: {update_response.status_code}")
+                    print(update_response.text)
+                
+                print('-' * 30)
+            else:
+                print(f"电影 '{movie_name}' 没有指定流派.")
+    else:
+        print(f"请求失败，状态码: {response.status_code}")
+        print(response.text)
+
 
 
 #emby_get_all_movie_genres()#PASSc
 #emby_get_item_info('429692')#PASS
 #emby_get_item_MetadataEditorInfo()#PASS
-emby_translate_genres()
+#emby_translate_genres()
+emby_translate_genres_and_update_whole_item()
