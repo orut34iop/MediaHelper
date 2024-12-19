@@ -1,15 +1,18 @@
 import requests
 import json
 
+'''
+代码调试失败
+'''
 
 # Emby服务器的API URL和认证信息
 emby_url = "http://192.168.2.42:8096"
 api_key = "850d6a3a78bc4ec6b584077b34b2a956"
+user_id = "WIZ-LT"
 
 # 设置API请求头
-headers = {
+http_headers = {
     'X-Emby-Token': api_key,
-    'Content-Type': 'application/json'
 }
 
 # 流派映射表
@@ -56,7 +59,7 @@ genres_map = {
 items_endpoint = f'{emby_url}/Items'
 
 # 设置查询参数
-params = {
+http_params = {
     'Recursive': 'true',
     'IncludeItemTypes': 'Movie',
     'Fields': 'Genres',  # 请求包含Genres字段
@@ -64,24 +67,36 @@ params = {
 }
 
 # 发送请求获取电影列表
-response = requests.get(items_endpoint, headers=headers, params=params)
+response = requests.get(items_endpoint, headers=http_headers, params=http_params)
 
 if response.status_code == 200:
     movies = response.json()['Items']
     
     for movie in movies:
-        # 动态解析json数据中的所有字段
-        movie_data = {}
-        print("\n解析到的所有字段:")
-        for key, value in movie.items():
-            movie_data[key] = value
-            print(f"{key}: {value}")
+
         
-        movie_id = movie_data.get('Id')
+        movie_id = movie.get('Id')
         if not movie_id:
-            print(f"电影ID为空，跳过此电影: {movie_data.get('Name')}")
+            print(f"电影ID为空，跳过此电影: {movie.get('Id')}")
             continue
         
+        #detail_item_endpoint = f'{emby_url}/emby/Users/WIZ-LT/Items/{movie_id}&api_key={api_key}'
+        detail_item_endpoint = f'{emby_url}/emby/Users/{user_id}/Items/{movie_id}'
+        #detail_item_endpoint = f'{emby_url}/Items/{movie_id}&api_key={api_key}'
+        detail_item_response = requests.get(detail_item_endpoint, headers=http_headers)
+        if detail_item_response.status_code == 200:
+            print("已获取完整电影信息")
+        else:
+            print(f"获取完整电影信息失败，状态码: {detail_item_response.status_code}")
+            print(f"响应内容: {detail_item_response.text}")
+            continue
+
+        movie_data = detail_item_response.json()
+        # 动态解析json数据中的所有字段
+        print("\n解析到的所有字段:")
+        for key, value in movie_data:
+            print(f"{key}: {value}")
+
         movie_name = movie_data.get('Name')
         genres = movie_data.get('Genres', [])
         
@@ -99,13 +114,14 @@ if response.status_code == 200:
                 print("翻译后流派为空，跳过更新。")
                 continue
             
-            update_endpoint = f'{emby_url}/Items/{movie_id}'
+            update_endpoint = f'{emby_url}/Items/{movie_id}?&api_key={api_key}'
             
             # 更新movie_data中的Genres
+
             movie_data['Genres'] = translated_genres
-            
-            update_response = requests.post(update_endpoint, headers=headers, data=json.dumps(movie_data))
-            
+            update_response = requests.post(update_endpoint, headers=http_headers, data=json.dumps(movie_data))
+
+           
             if update_response.status_code == 200:
                 print("电影信息已更新。")
             else:
