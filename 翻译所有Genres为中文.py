@@ -320,4 +320,4 @@ def emby_get_all_tv_genres():
 # emby_get_all_movie_genres() # PASS TESTING
 # emby_get_all_tv_genres() # PASS TESTING
 # emby_movie_translate_genres_and_update_whole_item() # PASS TESTING
-emby_tv_translate_genres_and_update_whole_item()
+# emby_tv_translate_genres_and_update_whole_item() # PASS TESTING
