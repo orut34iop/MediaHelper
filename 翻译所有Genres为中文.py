@@ -39,6 +39,7 @@ def emby_get_item_info(movie_id):
 
 def emby_translate_genres_and_update_whole_item():
 
+    update_count = 0  # 初始化计数器
     genreitems = []
 
     # 设置API请求头
@@ -109,7 +110,10 @@ def emby_translate_genres_and_update_whole_item():
             # print("\nParsed fields:")
             # for key, value in each_movie.items():
             #     print(f"{key}: {value}")
-
+            update_count += 1  # 更新计数器
+            original_genres = []  # 重置原始流派列表
+            translated_genres = []  # 重置翻译后的流派列表
+            
             movie_id = each_movie['Id']
             movie_name = each_movie['Name']
             original_genres = each_movie.get('Genres', [])
@@ -125,18 +129,32 @@ def emby_translate_genres_and_update_whole_item():
             movie = emby_get_item_info(movie_id)
 
             if not movie:
-                print(f"电影ID '{movie_id}' 的信息读取失败.")
+                print(f"电影ID '{movie_id}' 的信息读取失败.(Total updates: {update_count})")
                 continue
     
+            original_genres = []  # 重置原始流派列表    
+            translated_genres = []  # 重置翻译后的流派列表
+              
             movie_name = movie['Name']
             original_genres = movie.get('Genres', [])
+
             
+
+            print(f"Original movie id: {movie_id}")
+            print(f"Original movie name: {movie_name}")
+            print(f"Original movie genres: {movie.get('Genres', [])}")
+            print(f"Original movie genre items: {movie.get('GenreItems', [])}")
+
             if original_genres:
                 # 使用映射表翻译流派
                 translated_genres = [genres_map.get(genre, genre) for genre in original_genres]
 
                 # 只有当Genres值和原来不同时，才发起更新item信息
                 if original_genres != translated_genres:
+
+                    translated_genreitem = [];  # 重置翻译后的GenreItems列表
+                    genreitems = []  # 重置GenreItems列表
+
                     # 解析并保存GenreItems字段
                     for genreitem in movie.get('GenreItems', []):
                         translated_genreitem = genres_map.get(genreitem['Name'], genreitem['Name'])
@@ -146,15 +164,18 @@ def emby_translate_genres_and_update_whole_item():
                     movie['Genres'] = translated_genres
                     movie['GenreItems'] = genreitems
                     
+                    print(f"Updated movie genres: {movie['Genres']}")
+                    print(f"Updated movie genre items: {movie['GenreItems']}")
+
                     update_endpoint = f'{emby_url}/emby/Items/{movie_id}?/api_key={api_key}' 
                 
                     update_response = requests.post(update_endpoint, headers=headers, data=json.dumps(movie))
 
                     if update_response.status_code in [200, 204]:
                         # 打印原有和翻译后的流派
-                        print(f"电影: {movie_name} 流派信息已更新。")
+                        print(f"电影: {movie_name} 流派信息已更新。(Total updates: {update_count})")
                     else:
-                        print(f"更新失败，状态码: {update_response.status_code}")
+                        print(f"更新失败，状态码: {update_response.status_code}(Total updates: {update_count})")
                         print(update_response.text)
                     
                     print('-' * 30)
@@ -162,7 +183,7 @@ def emby_translate_genres_and_update_whole_item():
                 #    print(f"电影 '{movie_name}' 的流派信息没有改变.")
                     
             else:
-                print(f"电影 '{movie_name}' 没有指定流派.")
+                print(f"电影 '{movie_name}' 没有指定流派.(Total updates: {update_count})")
     else:
         print(f"请求失败，状态码: {response.status_code}")
         print(response.text)
