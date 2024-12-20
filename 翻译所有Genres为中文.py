@@ -48,7 +48,7 @@ def emby_get_item_info(movie_id):
         log_message(f"Response content: {detail_item_response.text}")
         return None
 
-def emby_translate_genres_and_update_whole_item():
+def emby_movie_translate_genres_and_update_whole_item():
 
     update_count = 0  # 初始化计数器
     genreitems = []
@@ -200,4 +200,4 @@ def emby_translate_genres_and_update_whole_item():
         log_message(response.text)
 
 
-emby_translate_genres_and_update_whole_item()
+emby_movie_translate_genres_and_update_whole_item()
