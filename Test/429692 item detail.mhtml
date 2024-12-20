@@ -1,0 +1,339 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: file:///C:/Users/wiz/Desktop/dev/emby-dupe-finder/index.html
+Subject: Emby Duplicate Finder
+Date: Thu, 19 Dec 2024 23:17:47 +0800
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--iaOMsa7bHwVJpatFQrnzTWddHwlP8lOuBuawGMoWDH----"
+
+
+------MultipartBoundary--iaOMsa7bHwVJpatFQrnzTWddHwlP8lOuBuawGMoWDH----
+Content-Type: text/html
+Content-ID: <frame-5759050C1D08958E64B4C6493D58705A@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: file:///C:/Users/wiz/Desktop/dev/emby-dupe-finder/index.html
+
+<!DOCTYPE html><html lang=3D"en"><head><meta http-equiv=3D"Content-Type" co=
+ntent=3D"text/html; charset=3DUTF-8">
+   =20
+    <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=
+=3D1.0">
+    <title>Emby Duplicate Finder</title>
+    <link rel=3D"stylesheet" href=3D"file:///C:/Users/wiz/Desktop/dev/emby-=
+dupe-finder/styles.css">
+    <link href=3D"https://fonts.googleapis.com/css2?family=3DRoboto:wght@30=
+0;400;700&amp;display=3Dswap" rel=3D"stylesheet">
+</head>
+<body>
+    <div class=3D"container">
+        <h1>Emby Duplicate Finder</h1>
+        <div class=3D"input-group">
+            <input type=3D"text" id=3D"embyServerUrl" placeholder=3D"Emby S=
+erver URL www.domain.com || IP:8096 || locahost:8096">
+            <input type=3D"text" id=3D"apiKey" placeholder=3D"API Key">
+            <input type=3D"text" id=3D"userName" placeholder=3D"User Name">
+            <input type=3D"text" id=3D"itemId" placeholder=3D"Item ID">
+            <button>Find Duplicate Movies</button>
+            <button>Find Item By ID</button>
+        </div>
+        <div id=3D"results"><h3>Item Information</h3><p><strong>Name:</stro=
+ng> 007=E4=B9=8B=E6=B5=B7=E5=BA=95=E5=9F=8E</p><p><strong>OriginalTitle:</s=
+trong> The Spy Who Loved Me</p><p><strong>ServerId:</strong> 779d8b58a18f44=
+fa83d4eceb52edcfcd</p><p><strong>Id:</strong> 429692</p><p><strong>Etag:</s=
+trong> 34ecd2279b7d70b1ce96eeb430a9c835</p><p><strong>DateCreated:</strong>=
+ 2024-02-12T16:15:04.0000000Z</p><p><strong>CanDelete:</strong> true</p><p>=
+<strong>CanDownload:</strong> true</p><p><strong>PresentationUniqueKey:</st=
+rong> cb5b8082147c473aa8b0538bd12f6ea7_</p><p><strong>SupportsSync:</strong=
+> true</p><p><strong>Container:</strong> iso</p><p><strong>SortName:</stron=
+g> 007=E4=B9=8B=E6=B5=B7=E5=BA=95=E5=9F=8E</p><p><strong>ForcedSortName:</s=
+trong> 007=E4=B9=8B=E6=B5=B7=E5=BA=95=E5=9F=8E</p><p><strong>PremiereDate:<=
+/strong> 1977-07-06T16:00:00.0000000Z</p><p><strong>ExternalUrls:</strong> =
+[object Object],[object Object],[object Object],[object Object]</p><p><stro=
+ng>MediaSources:</strong> [object Object],[object Object],[object Object],[=
+object Object],[object Object]</p><p><strong>CriticRating:</strong> 82</p><=
+p><strong>ProductionLocations:</strong> =E8=8B=B1=E5=9B=BD,=E7=BE=8E=E5=9B=
+=BD</p><p><strong>Path:</strong> C:\emby-as-115\MOVIE\iso\007=E4=B9=8B=E6=
+=B5=B7=E5=BA=95=E5=9F=8E (1977)\[007=E7=B3=BB=E5=88=9710=EF=BC=9A=E6=B5=B7=
+=E5=BA=95=E5=9F=8E_The_Spy_Who_Loved_Me_1977][DIY=E5=9B=BD=E8=AF=AD_=E7=AE=
+=80=E7=B9=81=E7=89=B9=E6=95=88=E4=B8=AD=E5=AD=97][CHDBits][42.90GB].iso</p>=
+<p><strong>OfficialRating:</strong> US:PG / US:Rated PG</p><p><strong>Overv=
+iew:</strong> =E8=BF=91=E6=97=A5=EF=BC=8C=E8=8B=B1=E5=9B=BD=E3=80=81=E8=8B=
+=8F=E8=81=94=E4=B8=A4=E5=9B=BD=E6=A0=B8=E5=AD=90=E6=BD=9C=E8=89=87=E7=AB=9F=
+=E7=84=B6=E7=9B=B8=E7=BB=A7=E7=A6=BB=E5=A5=87=E5=A4=B1=E8=B8=AA=E4=BA=86=EF=
+=BC=81=E8=BF=99=E4=B8=80=E7=8E=B0=E8=B1=A1=E5=BC=95=E8=B5=B7=E4=BA=86=E8=8B=
+=B1=E5=9B=BD=E5=86=9B=E6=96=B9=E7=9A=84=E9=AB=98=E5=BA=A6=E9=87=8D=E8=A7=86=
+=EF=BC=8C=E5=BD=93=E7=84=B6=E5=8F=88=E5=88=B0=E4=BA=86=E7=8E=8B=E7=89=8C=E7=
+=89=B9=E5=B7=A5007=E9=82=A6=E5=BE=B7=EF=BC=88=E7=BD=97=E6=9D=B0=E2=80=A2=E6=
+=91=A9=E5=B0=94 Roger Moore =E9=A5=B0=EF=BC=89=E7=9A=84=E5=87=BA=E5=9C=BA=
+=E6=97=B6=E9=97=B4=E3=80=82=E9=82=A6=E5=BE=B7=E7=BB=8F=E8=BF=87=E8=B0=83=E6=
+=9F=A5=E7=BB=88=E4=BA=8E=E5=8F=91=E7=8E=B0=E5=B9=95=E5=90=8E=E7=9A=84=E9=BB=
+=91=E6=89=8B=E5=8E=9F=E6=9D=A5=E5=B0=B1=E6=98=AF=E4=B8=96=E7=95=8C=E5=B7=A8=
+=E5=AF=8C=E8=88=AA=E8=BF=90=E4=B8=9A=E5=A4=A7=E4=BA=A8=E5=8F=B2=E7=99=BB=E5=
+=A0=A1=EF=BC=8C=E4=BB=96=E4=B8=BA=E5=AE=9E=E7=8E=B0=E8=87=AA=E5=B7=B1=E5=BE=
+=81=E6=9C=8D=E4=B8=96=E7=95=8C=E7=9A=84=E9=87=8E=E5=BF=83=EF=BC=8C=E5=BB=BA=
+=E7=AB=8B=E4=BA=86=E4=B8=80=E5=BA=A7=E6=B5=B7=E5=BA=95=E5=9F=8E=E3=80=82=E5=
+=8F=B2=E7=99=BB=E5=A0=A1=E9=AB=98=E8=96=AA=E8=81=98=E8=AF=B7=E7=A7=91=E5=AD=
+=A6=E5=AE=B6=E7=A0=94=E5=8F=91=E5=87=BA=E4=BA=86=E6=BD=9C=E6=B0=B4=E8=89=87=
+=E8=B7=9F=E8=B8=AA=E7=B3=BB=E7=BB=9F=EF=BC=8C=E6=8A=8A=E6=8A=8A=E8=8B=B1=E3=
+=80=81=E8=8B=8F=E6=A0=B8=E5=AD=90=E5=8A=A8=E5=8A=9B=E6=BD=9C=E8=89=87=E5=8D=
+=A0=E4=B8=BA=E5=B7=B1=E6=9C=89=EF=BC=8C=E4=BB=96=E8=AE=A1=E5=88=92=E5=88=A9=
+=E7=94=A8=E6=A0=B8=E5=AD=90=E9=A3=9E=E5=BC=B9=E5=B0=86=E7=BA=BD=E7=BA=A6=E5=
+=92=8C=E8=8E=AB=E6=96=AF=E7=A7=91=E7=82=B8=E6=AF=81=EF=BC=8C=E5=AE=9E=E7=8E=
+=B0=E4=B8=80=E6=AC=A1=E6=AF=81=E7=81=AD=E4=B8=A4=E4=B8=AA=E8=B6=85=E7=BA=A7=
+=E5=BC=BA=E5=9B=BD=E7=9A=84=E9=87=8E=E5=BF=83=E3=80=82007=E5=8D=B3=E5=B0=86=
+=E8=BF=9B=E5=85=A5=E6=B5=B7=E5=BA=95=E5=9F=8E=E7=BB=84=E7=BB=87=E8=BF=99=E4=
+=B8=AA=E7=8B=82=E4=BA=BA=E7=9A=84=E7=96=AF=E7=8B=82=E8=AE=A1=E5=88=92=E3=80=
+=82</p><p><strong>Taglines:</strong> It's the BIGGEST. It's the BEST. It's =
+BOND. And B-E-Y-O-N-D.</p><p><strong>Genres:</strong> Adventure,Action,Thri=
+ller</p><p><strong>CommunityRating:</strong> 7</p><p><strong>Size:</strong>=
+ 0</p><p><strong>FileName:</strong> [007=E7=B3=BB=E5=88=9710=EF=BC=9A=E6=B5=
+=B7=E5=BA=95=E5=9F=8E_The_Spy_Who_Loved_Me_1977][DIY=E5=9B=BD=E8=AF=AD_=E7=
+=AE=80=E7=B9=81=E7=89=B9=E6=95=88=E4=B8=AD=E5=AD=97][CHDBits][42.90GB].iso<=
+/p><p><strong>ProductionYear:</strong> 1977</p><p><strong>RemoteTrailers:</=
+strong> [object Object]</p><p><strong>ProviderIds:</strong> [object Object]=
+</p><p><strong>IsFolder:</strong> false</p><p><strong>ParentId:</strong> 42=
+0284</p><p><strong>Type:</strong> Movie</p><p><strong>People:</strong> [obj=
+ect Object],[object Object],[object Object],[object Object],[object Object]=
+,[object Object],[object Object],[object Object],[object Object],[object Ob=
+ject],[object Object],[object Object],[object Object],[object Object],[obje=
+ct Object],[object Object],[object Object],[object Object],[object Object],=
+[object Object],[object Object],[object Object],[object Object],[object Obj=
+ect],[object Object],[object Object],[object Object],[object Object],[objec=
+t Object],[object Object],[object Object],[object Object],[object Object],[=
+object Object],[object Object],[object Object],[object Object],[object Obje=
+ct],[object Object],[object Object],[object Object],[object Object],[object=
+ Object],[object Object],[object Object],[object Object],[object Object],[o=
+bject Object],[object Object],[object Object],[object Object],[object Objec=
+t],[object Object],[object Object],[object Object],[object Object],[object =
+Object],[object Object],[object Object],[object Object],[object Object],[ob=
+ject Object],[object Object],[object Object],[object Object],[object Object=
+],[object Object],[object Object],[object Object],[object Object],[object O=
+bject],[object Object],[object Object],[object Object]</p><p><strong>Studio=
+s:</strong> [object Object],[object Object]</p><p><strong>GenreItems:</stro=
+ng> [object Object],[object Object],[object Object]</p><p><strong>TagItems:=
+</strong> [object Object],[object Object],[object Object],[object Object],[=
+object Object],[object Object],[object Object],[object Object],[object Obje=
+ct],[object Object],[object Object],[object Object],[object Object],[object=
+ Object],[object Object],[object Object],[object Object],[object Object],[o=
+bject Object],[object Object],[object Object],[object Object],[object Objec=
+t],[object Object],[object Object],[object Object],[object Object]</p><p><s=
+trong>LocalTrailerCount:</strong> 0</p><p><strong>UserData:</strong> [objec=
+t Object]</p><p><strong>DisplayPreferencesId:</strong> dbf7709c41faaa746463=
+d67978eb863d</p><p><strong>PrimaryImageAspectRatio:</strong> 0.666666666666=
+6666</p><p><strong>MediaStreams:</strong> </p><p><strong>PartCount:</strong=
+> 1</p><p><strong>ImageTags:</strong> [object Object]</p><p><strong>Backdro=
+pImageTags:</strong> 142be157246429800754179bc62a1035</p><p><strong>Chapter=
+s:</strong> </p><p><strong>MediaType:</strong> Video</p><p><strong>LockedFi=
+elds:</strong> </p><p><strong>LockData:</strong> false</p></div>
+    </div>
+   =20
+    <div id=3D"loading-overlay" class=3D"hidden">
+        <div class=3D"spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+</body></html>
+------MultipartBoundary--iaOMsa7bHwVJpatFQrnzTWddHwlP8lOuBuawGMoWDH----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: file:///C:/Users/wiz/Desktop/dev/emby-dupe-finder/styles.css
+
+@charset "utf-8";
+
+body { font-family: Roboto, sans-serif; background-color: rgb(15, 18, 25); =
+color: rgb(255, 255, 255); margin: 0px; padding: 20px; min-height: 100vh; d=
+isplay: flex; justify-content: center; align-items: center; }
+
+.container { max-width: 800px; width: 100%; }
+
+h1 { text-align: center; margin-bottom: 30px; font-weight: 300; font-size: =
+2.5em; color: rgb(79, 195, 247); text-transform: uppercase; letter-spacing:=
+ 2px; }
+
+.input-group { display: flex; flex-direction: column; gap: 15px; margin-bot=
+tom: 30px; }
+
+input, button { padding: 15px; border: none; border-radius: 8px; font-size:=
+ 16px; transition: 0.3s; }
+
+input { background-color: rgb(30, 39, 56); color: rgb(255, 255, 255); box-s=
+hadow: rgba(0, 0, 0, 0.1) 0px 2px 4px inset; }
+
+input:focus { outline: none; box-shadow: rgb(79, 195, 247) 0px 0px 0px 2px;=
+ }
+
+button { background-color: rgb(79, 195, 247); color: rgb(15, 18, 25); curso=
+r: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1=
+px; box-shadow: rgba(79, 195, 247, 0.1) 0px 4px 6px; }
+
+button:hover { background-color: rgb(61, 184, 235); transform: translateY(-=
+2px); box-shadow: rgba(79, 195, 247, 0.2) 0px 6px 8px; }
+
+#results { display: grid; gap: 20px; }
+
+.library-box { background-color: rgb(30, 39, 56); border-radius: 10px; padd=
+ing: 20px; box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px; transition: 0.3s; =
+opacity: 0; transform: translateY(20px); animation: 0.5s ease 0s 1 normal f=
+orwards running fadeIn; }
+
+@keyframes fadeIn {=20
+  100% { opacity: 1; transform: translateY(0px); }
+}
+
+.library-box h3 { margin-top: 0px; color: rgb(79, 195, 247); font-weight: 4=
+00; }
+
+.library-box p { margin-bottom: 15px; }
+
+.library-box button { background-color: rgb(46, 68, 94); color: rgb(255, 25=
+5, 255); padding: 10px 15px; font-size: 14px; }
+
+.library-box button:hover { background-color: rgb(61, 90, 125); }
+
+#loading-overlay { position: fixed; top: 0px; left: 0px; width: 100%; heigh=
+t: 100%; background-color: rgba(15, 18, 25, 0.9); display: flex; flex-direc=
+tion: column; justify-content: center; align-items: center; z-index: 1000; =
+transition: opacity 0.3s; }
+
+#loading-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.spinner { width: 50px; height: 50px; border-width: 3px; border-style: soli=
+d; border-color: transparent rgb(79, 195, 247) rgb(79, 195, 247); border-im=
+age: initial; border-radius: 50%; animation: 1s linear 0s infinite normal n=
+one running spin; }
+
+#loading-overlay p { margin-top: 20px; font-size: 18px; color: rgb(79, 195,=
+ 247); }
+
+@keyframes spin {=20
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+  body { padding: 10px; }
+  h1 { font-size: 2em; }
+  input, button { padding: 12px; }
+}
+------MultipartBoundary--iaOMsa7bHwVJpatFQrnzTWddHwlP8lOuBuawGMoWDH----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap
+
+@charset "utf-8";
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 300; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmSU5fCRc4EsA.woff2") format("woff2"); unicode-range: U+460-52F, U+1C8=
+0-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 300; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmSU5fABc4EsA.woff2") format("woff2"); unicode-range: U+301, U+400-45F=
+, U+490-491, U+4B0-4B1, U+2116; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 300; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmSU5fCBc4EsA.woff2") format("woff2"); unicode-range: U+1F00-1FFF; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 300; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmSU5fBxc4EsA.woff2") format("woff2"); unicode-range: U+370-377, U+37A=
+-37F, U+384-38A, U+38C, U+38E-3A1, U+3A3-3FF; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 300; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmSU5fCxc4EsA.woff2") format("woff2"); unicode-range: U+102-103, U+110=
+-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301, U+303-304, U+3=
+08-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 300; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmSU5fChc4EsA.woff2") format("woff2"); unicode-range: U+100-2BA, U+2BD=
+-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, U+308, U+329, U+1D00-1DBF, U+=
+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C=
+7F, U+A720-A7FF; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 300; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmSU5fBBc4.woff2") format("woff2"); unicode-range: U+0-FF, U+131, U+15=
+2-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329, U+2000-206F, U+=
+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 400; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu=
+92Fr1Mu72xKOzY.woff2") format("woff2"); unicode-range: U+460-52F, U+1C80-1C=
+8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 400; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu=
+92Fr1Mu5mxKOzY.woff2") format("woff2"); unicode-range: U+301, U+400-45F, U+=
+490-491, U+4B0-4B1, U+2116; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 400; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu=
+92Fr1Mu7mxKOzY.woff2") format("woff2"); unicode-range: U+1F00-1FFF; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 400; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu=
+92Fr1Mu4WxKOzY.woff2") format("woff2"); unicode-range: U+370-377, U+37A-37F=
+, U+384-38A, U+38C, U+38E-3A1, U+3A3-3FF; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 400; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu=
+92Fr1Mu7WxKOzY.woff2") format("woff2"); unicode-range: U+102-103, U+110-111=
+, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301, U+303-304, U+308-3=
+09, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 400; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu=
+92Fr1Mu7GxKOzY.woff2") format("woff2"); unicode-range: U+100-2BA, U+2BD-2C5=
+, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, U+308, U+329, U+1D00-1DBF, U+1E00=
+-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, =
+U+A720-A7FF; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 400; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOmCnqEu=
+92Fr1Mu4mxK.woff2") format("woff2"); unicode-range: U+0-FF, U+131, U+152-15=
+3, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329, U+2000-206F, U+20AC=
+, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 700; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmWUlfCRc4EsA.woff2") format("woff2"); unicode-range: U+460-52F, U+1C8=
+0-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 700; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmWUlfABc4EsA.woff2") format("woff2"); unicode-range: U+301, U+400-45F=
+, U+490-491, U+4B0-4B1, U+2116; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 700; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmWUlfCBc4EsA.woff2") format("woff2"); unicode-range: U+1F00-1FFF; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 700; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmWUlfBxc4EsA.woff2") format("woff2"); unicode-range: U+370-377, U+37A=
+-37F, U+384-38A, U+38C, U+38E-3A1, U+3A3-3FF; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 700; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmWUlfCxc4EsA.woff2") format("woff2"); unicode-range: U+102-103, U+110=
+-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301, U+303-304, U+3=
+08-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 700; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmWUlfChc4EsA.woff2") format("woff2"); unicode-range: U+100-2BA, U+2BD=
+-2C5, U+2C7-2CC, U+2CE-2D7, U+2DD-2FF, U+304, U+308, U+329, U+1D00-1DBF, U+=
+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C=
+7F, U+A720-A7FF; }
+
+@font-face { font-family: Roboto; font-style: normal; font-weight: 700; fon=
+t-display: swap; src: url("https://fonts.gstatic.com/s/roboto/v32/KFOlCnqEu=
+92Fr1MmWUlfBBc4.woff2") format("woff2"); unicode-range: U+0-FF, U+131, U+15=
+2-153, U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329, U+2000-206F, U+=
+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+------MultipartBoundary--iaOMsa7bHwVJpatFQrnzTWddHwlP8lOuBuawGMoWDH------
