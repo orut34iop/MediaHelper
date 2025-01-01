@@ -1,20 +1,105 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+从115网盘导出的目录树文件创建空文件结构
+用途：保持目录结构，但文件内容为空，用于测试或结构验证
+"""
+
 import os
-import shutil
 import re
+import shutil
 import sys
+from typing import List, Tuple
 
 # 设置标准输出编码为utf-8
 sys.stdout.reconfigure(encoding='utf-8')
 
-def replace_special_chars(path):
-    """替换路径中的特殊字符"""
+def replace_special_chars(path: str) -> str:
+    """
+    替换路径中的特殊字符
+    Args:
+        path: 原始路径
+    Returns:
+        处理后的路径
+    """
     if '*' in path:
         new_path = path.replace('*', 's')
         print(f'Replace special chars: {path} -> {new_path}')
         return new_path
     return path
 
-def create_empty_files_from_list(file_path, tmp_dir):
+def read_file_with_encodings(file_path: str) -> List[str]:
+    """
+    尝试使用不同的编码读取文件
+    Args:
+        file_path: 文件路径
+    Returns:
+        文件内容行列表
+    Raises:
+        UnicodeDecodeError: 当所有编码都无法正确读取文件时
+    """
+    encodings = ['utf-8', 'gbk', 'ansi', 'mbcs', 'gb2312']
+    
+    for encoding in encodings:
+        try:
+            with open(file_path, 'r', encoding=encoding) as file:
+                return file.readlines()
+        except UnicodeDecodeError:
+            continue
+    
+    raise UnicodeDecodeError(f"无法使用以下编码读取文件: {encodings}")
+
+def parse_lines_to_tuples(file_path: str) -> List[Tuple[int, str]]:
+    """
+    解析文件内容为层级和名称的元组列表
+    Args:
+        file_path: 要解析的文件路径
+    Returns:
+        包含(层级,名称)元组的列表
+    """
+    tuples_list = []
+    try:
+        lines = read_file_with_encodings(file_path)
+    except UnicodeDecodeError as e:
+        print(f"Error reading file: {e}")
+        return []
+    
+    for line in lines:
+        line = line.strip()
+        level = line.count('|')
+        if line.startswith('|——'):
+            name = line[3:].strip()  # 修复拼写错误
+        elif line.startswith('| |-'):
+            name = line[4:].strip()
+        elif line.startswith('| | |-'):
+            name = line[6:].strip()
+        elif line.startswith('| | | |-'):
+            name = line[8:].strip()
+        elif line.startswith('| | | | |-'):
+            name = line[10:].strip()
+        elif line.startswith('| | | | | |-'):
+            name = line[12:].strip()
+        elif line.startswith('| | | | | | |-'):
+            name = line[14:].strip()
+        elif line.startswith('| | | | | | | |-'):
+            name = line[16:].strip()
+        elif line.startswith('| | | | | | | | |-'):
+            name = line[18:].strip()
+        elif line.startswith('| | | | | | | | | |-'):
+            name = line[20:].strip()
+        else:
+            continue
+        tuples_list.append((level, name))
+    
+    return tuples_list
+
+def create_empty_files_from_list(file_path: str, tmp_dir: str) -> None:
+    """
+    根据目录树文件创建空文件结构
+    Args:
+        file_path: 目录树文件路径
+        tmp_dir: 输出目录路径
+    """
     # 清空目录
     if os.path.exists(tmp_dir):
         shutil.rmtree(tmp_dir)
@@ -208,63 +293,16 @@ def create_empty_files_from_list(file_path, tmp_dir):
             print(f'Error , set current_dir: {current_dir}')
             inogre_level = level
 
-def read_file_with_encodings(file_path):
-    """尝试使用不同的编码读取文件"""
-    encodings = ['utf-8', 'gbk', 'ansi', 'mbcs', 'gb2312']
-    
-    for encoding in encodings:
-        try:
-            with open(file_path, 'r', encoding=encoding) as file:
-                return file.readlines()
-        except UnicodeDecodeError:
-            continue
-    
-    raise UnicodeDecodeError(f"无法使用以下编码读取文件: {encodings}")
-
-def parse_lines_to_tuples(file_path):
-    tuples_list = []
-    try:
-        lines = read_file_with_encodings(file_path)
-    except UnicodeDecodeError as e:
-        print(f"Error reading file: {e}")
-        return []
-    
-    for line in lines:
-        line = line.strip()
-        level = line.count('|')
-        if line.startswith('|——'):
-            name = line[3:].strip()  # 修复拼写错误
-        elif line.startswith('| |-'):
-            name = line[4:].strip()
-        elif line.startswith('| | |-'):
-            name = line[6:].strip()
-        elif line.startswith('| | | |-'):
-            name = line[8:].strip()
-        elif line.startswith('| | | | |-'):
-            name = line[10:].strip()
-        elif line.startswith('| | | | | |-'):
-            name = line[12:].strip()
-        elif line.startswith('| | | | | | |-'):
-            name = line[14:].strip()
-        elif line.startswith('| | | | | | | |-'):
-            name = line[16:].strip()
-        elif line.startswith('| | | | | | | | |-'):
-            name = line[18:].strip()
-        elif line.startswith('| | | | | | | | | |-'):
-            name = line[20:].strip()
-        else:
-            continue
-        tuples_list.append((level, name))
-    
-    return tuples_list
-
 if __name__ == "__main__":
-    '''
+
     input_file_path = input("请输入文件的完整路径: ")
     tmp_dir = input("请输入要保存空文件的目录路径: ")
     create_empty_files_from_list(input_file_path, tmp_dir)
     '''
-    create_empty_files_from_list(r'C:\Users\wiz\Downloads\预处理-影片20241231203309_目录树.txt', r'C:\tmp_115')  # 使用原始字符串
-
-    # 等待用户输入回车键再退出
+    # 使用示例路径进行测试
+    create_empty_files_from_list(
+        r'C:\Users\wiz\Downloads\预处理-影片20241231203309_目录树.txt', 
+        r'C:\tmp_115'
+    )
+    '''    
     input("按回车键退出程序...")
