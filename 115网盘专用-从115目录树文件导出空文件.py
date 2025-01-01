@@ -6,6 +6,14 @@ import sys
 # 设置标准输出编码为utf-8
 sys.stdout.reconfigure(encoding='utf-8')
 
+def replace_special_chars(path):
+    """替换路径中的特殊字符"""
+    if '*' in path:
+        new_path = path.replace('*', 's')
+        print(f'Replace special chars: {path} -> {new_path}')
+        return new_path
+    return path
+
 def create_empty_files_from_list(file_path, tmp_dir):
     # 清空目录
     if os.path.exists(tmp_dir):
@@ -35,9 +43,10 @@ def create_empty_files_from_list(file_path, tmp_dir):
 
             if level == 1:
                 current_dir = os.path.join(tmp_dir, name)
+                current_dir = replace_special_chars(current_dir)
                 pre_level = level
                 pre_item_type = 'dir'
-                #os.makedirs(current_dir, exist_ok=True)
+                os.makedirs(current_dir, exist_ok=True)
             else:
                 if not re.match(r'.*\.[a-zA-Z0-9]{2,4}$', name):  #名称尾部不是'.xxx',表示2或者3或者4个数字或大小写字母,判定为目录
                     '''
@@ -101,10 +110,17 @@ def create_empty_files_from_list(file_path, tmp_dir):
                         print(f'level error! pls check: {name}')
                         return
 
-                    pre_level = level
-                    pre_item_type = 'dir'
-                    print(f'{pre_level} -- {level} dir  :  {current_dir}')
-                    #os.makedirs(current_dir, exist_ok=True)
+
+                    try:
+                        current_dir = replace_special_chars(current_dir)
+                        os.makedirs(current_dir, exist_ok=True)
+                        pre_level = level
+                        pre_item_type = 'dir'
+                        print(f'{pre_level} -- {level} dir  :  {current_dir}')
+                    except Exception as e:
+                        print(f"Error creating directory: {e}")
+                        inogre_level = level
+                        return
                     
                 else:  # 文件
                     '''
@@ -167,11 +183,18 @@ def create_empty_files_from_list(file_path, tmp_dir):
                         print(f'level error! pls check: {name}')
                         return
                     
-                    pre_level = level
-                    pre_item_type = 'file'
-                    print(f'{pre_level} -- {level} file :  {empty_file_path}')
-                    #open(empty_file_path, 'a').close()
-                    continue
+
+                    try:
+                        empty_file_path = replace_special_chars(empty_file_path)
+                        open(empty_file_path, 'a').close()
+                        pre_level = level
+                        pre_item_type = 'file'
+                        print(f'{pre_level} -- {level} file :  {empty_file_path}')
+                        continue
+                    except Exception as e:
+                        print(f"Error creating file: {e}")
+                        inogre_level = level
+                        return                   
 
             # 检查 current_dir 是否以 tmp_dir 开头
             if 'tmdbid-1118343' in current_dir:
