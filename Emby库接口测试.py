@@ -7,6 +7,7 @@ import time
 emby_url = "http://192.168.2.42:8096"
 api_key = "850d6a3a78bc4ec6b584077b34b2a956"
 user_id = 'cefa80922459464484efd3ac11a714b8' #  是从wireshark抓包工具中获取的
+
     
 def emby_get_all_movie_genres():
 
@@ -412,9 +413,38 @@ def emby_translate_genres_and_update_whole_item():
         print(response.text)
 
 
+def emby_get_user_id():
+  
+    # 替换为你的 Emby server 地址、端口和 API 密钥
+    server_address = 'http://192.168.2.42'
+    port = '8096'  # 默认端口，如果不同请替换
+    api_key = '850d6a3a78bc4ec6b584077b34b2a956'
+    user_name = 'WIZ-LT'
+
+    # 构造请求URL
+    url = f'{server_address}:{port}/Users/Public?api_key={api_key}'
+
+    # 发送GET请求
+    response = requests.get(url)
+
+    # 检查请求是否成功
+    if response.status_code == 200:
+        users = response.json()
+        for user in users:
+            print(f"User Name: {user['Name']}, User ID: {user['Id']}")
+            if user['Name'] == user_name:
+                print(f"Found! User Name: {user_name}, User ID: {user['Id']}")
+                return user['Id']
+
+    else:
+        print("Failed to retrieve data")
+
+
+emby_get_user_id()
+
 
 #emby_get_all_movie_genres()#PASSc
 #emby_get_item_info('429692')#PASS
 #emby_get_item_MetadataEditorInfo()#PASS
 #emby_translate_genres()
-emby_translate_genres_and_update_whole_item()
+#emby_translate_genres_and_update_whole_item()

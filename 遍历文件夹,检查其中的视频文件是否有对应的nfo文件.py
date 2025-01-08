@@ -19,6 +19,8 @@ def check_nfo_files(folder_path):
             
             if not os.path.exists(os.path.join(root, nfo_file)):
                 logging.info(f"No .nfo file found for: {os.path.join(root, video_file)}")
+            else:
+                logging.info("found video")
 
 if __name__ == "__main__":
 
@@ -30,4 +32,5 @@ if __name__ == "__main__":
     else:
         check_nfo_files(folder_to_check)
 
+    logging.info("done!")
     input("按回车键退出程序...")
