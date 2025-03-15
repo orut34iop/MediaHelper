@@ -1,7 +1,15 @@
 import requests
 import json
 import time
+import logging
 
+# 配置日志记录器
+logging.basicConfig(
+    level=logging.DEBUG,  # 设置日志级别为DEBUG，记录所有级别的日志
+    filename='movie_tags.log',  # 指定日志文件的名称
+    filemode='w',  # 覆盖写入模式
+    format='%(asctime)s - %(levelname)s - %(message)s'  # 日志格式
+)
 
 # Emby server API URL and authentication information
 emby_url = "http://192.168.2.42:8096"
@@ -440,7 +448,60 @@ def emby_get_user_id():
         print("Failed to retrieve data")
 
 
-emby_get_user_id()
+def emby_get_all_movie_tags():
+    # Set API request headers
+    headers = {
+        'X-Emby-Token': api_key
+    }
+
+    # Get the API endpoint for all movies
+    items_endpoint = f'{emby_url}/Items'
+
+    # Set query parameters
+    params = {
+        'Recursive': 'true',
+        'IncludeItemTypes': 'Movie',
+        'Fields': 'Tags',  # Request to include the Genres field
+        'Limit': '1000000'  # Adjust the limit according to your needs
+    }
+
+    # Send request to get the list of movies
+    response = requests.get(items_endpoint, headers=headers, params=params)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        movies = response.json()['Items']
+        # Use a set to remove duplicate genres
+        all_tags = set()
+        
+        for movie in movies:
+
+            # Dynamically parse all fields in the JSON data
+            '''
+            print("\nParsed fields:")
+            for key, value in movie.items():
+                print(f"{key}: {value}")
+            '''
+
+
+            movie_name = movie['Name']
+            tag_items = movie.get('TagItems', [])
+            if tag_items:
+                # Extract tag names from TagItems
+                tags = [tag['Name'] for tag in tag_items]
+                all_tags.update(tags)
+            else:
+                print(f"Movie '{movie_name}' has no specified tags.")
+        
+        # Print all unique genres
+        print("All unique tags:")
+        print(f"All unique tags count: {len(all_tags)}")
+        for tag in sorted(all_tags):
+            print(tag)
+            logging.info(tag)
+    else:
+        print(f"Request failed, status code: {response.status_code}")
+        print(response.text)
 
 
 #emby_get_all_movie_genres()#PASSc
@@ -448,3 +509,4 @@ emby_get_user_id()
 #emby_get_item_MetadataEditorInfo()#PASS
 #emby_translate_genres()
 #emby_translate_genres_and_update_whole_item()
+emby_get_all_movie_tags() #PASSc
